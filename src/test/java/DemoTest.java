@@ -2,6 +2,7 @@ import io.dropwizard.jackson.Jackson;
 import org.junit.Test;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import accessone.com.core.Cardholder;
+
 import static io.dropwizard.testing.FixtureHelpers.fixture;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -9,30 +10,32 @@ public class DemoTest {
 
     private static final ObjectMapper MAPPER = Jackson.newObjectMapper();
 
-//    @Test
-//    public void serializesToJSON() throws Exception {
-//        final Cardholder cardholder = new Demo(3L,"Demo3","Description Demo3");
-//        final String expected = MAPPER.writeValueAsString(
-//                MAPPER.readValue(fixture("fixtures/demo3.json"), Demo.class));
-//        assertThat(MAPPER.writeValueAsString(demo)).isEqualTo(expected);
-//    }
-//
-//    @Test
-//    public void deserializesFromJSON() throws Exception {
-//        final Demo demo = new Demo(3L,"Demo3","Description Demo3");
-//        assertThat(MAPPER.readValue(fixture("fixtures/demo3.json"), Demo.class))
-//                .isEqualTo(demo);
-//    }
-//
-//    @Test
-//    public void equals() throws Exception {
-//        final Demo demo1 = new Demo();
-//        final Demo demo2 = MAPPER.readValue(fixture("fixtures/demo2.json"), Demo.class);
-//        final Demo demo3 = MAPPER.readValue(fixture("fixtures/demo3.json"), Demo.class);
-//
-//        assertThat(demo2).isNotEqualTo(null);
-//        assertThat(demo2).isNotEqualTo(demo1);
-//        assertThat(demo2).isNotEqualTo(demo3);
-//        assertThat(demo2).isEqualTo(demo2);
-//    }
+    @Test
+    public void serializesToJSON() throws Exception {
+        final Cardholder cardholder =
+                new Cardholder(3L,"TestTitle3","TestFirstName3","TestSurname3", "TestEmpNo3", 3, "TestEmailAddress3");
+        final String expected = MAPPER.writeValueAsString(
+                MAPPER.readValue(fixture("fixtures/cardholder3.json"), Cardholder.class));
+        assertThat(MAPPER.writeValueAsString(cardholder)).isEqualTo(expected);
+    }
+
+    @Test
+    public void deserializesFromJSON() throws Exception {
+        final Cardholder cardholder =
+                new Cardholder(3L,"TestTitle3","TestFirstName3","TestSurname3", "TestEmpNo3", 3, "TestEmailAddress3");
+        assertThat(MAPPER.readValue(fixture("fixtures/cardholder3.json"), Cardholder.class))
+                .isEqualTo(cardholder);
+    }
+
+    @Test
+    public void equals() throws Exception {
+        final Cardholder cardholder1 = new Cardholder();
+        final Cardholder cardholder2 = MAPPER.readValue(fixture("fixtures/cardholder2.json"), Cardholder.class);
+        final Cardholder cardholder3 = MAPPER.readValue(fixture("fixtures/cardholder3.json"), Cardholder.class);
+
+        assertThat(cardholder2).isNotEqualTo(null);
+        assertThat(cardholder2).isNotEqualTo(cardholder1);
+        assertThat(cardholder2).isNotEqualTo(cardholder3);
+        assertThat(cardholder2).isEqualTo(cardholder2);
+    }
 }

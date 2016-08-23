@@ -20,7 +20,8 @@ public class DemoResourceMockTest {
 
     private static final CardholderDAO mockCardholderDAO = mock(CardholderDAO.class);
 
-    private final Cardholder cardholderFixture = new Cardholder(3L,"Mr","Ben","Morton", "BM001", 1, "ben.morton@pebble.tv");
+    private final Cardholder cardholderFixture =
+            new Cardholder(3L,"TestTitle","TestFirstName","TestSurname", "TestEmpNo", 1, "TestEmailAddress");
 
     @ClassRule
     public static final ResourceTestRule resources = ResourceTestRule.builder()
