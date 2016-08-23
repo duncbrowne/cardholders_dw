@@ -1,9 +1,7 @@
 package accessone.com.core;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import javax.persistence.*;
-//import java.util.Date;
+import java.util.Date;
 
 /**
  * Current Project cardholder_dropwizard
@@ -23,19 +21,14 @@ public class Cardholder
     private String employeeNumber;
     private long departmentID;
     private String emailAddress;
-//    @Column(name = "DateCreated", columnDefinition="DATETIME")
-//    @Temporal(TemporalType.TIMESTAMP)
-//    private Date dateCreated;
-//    @Column(name = "LastModified", columnDefinition="DATETIME")
-//    @Temporal(TemporalType.TIMESTAMP)
-//    private Date lastModified;
+    private Date dateCreated;
+    private Date lastModified;
 
     public Cardholder() {
     }
 
     public Cardholder(long cardholderID, String title, String firstName, String surname,
                       String employeeNumber, long departmentID, String emailAddress)
-//                        ,Date dateCreated, Date lastModified)
     {
         this.cardholderID = cardholderID;
         this.title = title;
@@ -44,8 +37,6 @@ public class Cardholder
         this.employeeNumber = employeeNumber;
         this.emailAddress = emailAddress;
         this.departmentID = departmentID;
-//        this.dateCreated = dateCreated;
-//        this.lastModified = lastModified;
     }
 
     public long getCardholderID()
@@ -118,25 +109,25 @@ public class Cardholder
         this.departmentID = departmentID;
     }
 
-//    public Date getDateCreated()
-//    {
-//        return dateCreated;
-//    }
-//
-//    public void setDateCreated (Date dateCreated)
-//    {
-//        this.dateCreated = dateCreated;
-//    }
+    public String getDateCreated()
+    {
+        return dateCreated.toString();
+    }
 
-//    public Date getLastModified()
-//    {
-//        return lastModified;
-//    }
-//
-//    public void setLastModified(Date lastModified)
-//    {
-//        this.lastModified = lastModified;
-//    }
+    public void setDateCreated (Date dateCreated)
+    {
+        this.dateCreated = dateCreated;
+    }
+
+    public String getLastModified()
+    {
+        return lastModified.toString();
+    }
+
+    public void setLastModified(Date lastModified)
+    {
+        this.lastModified = lastModified;
+    }
     @Override
     public boolean equals(Object o)
     {
