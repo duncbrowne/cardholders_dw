@@ -1,17 +1,15 @@
-package accessone.com.resources;
+package com.accessone.resources;
 
-import accessone.com.core.Cardholder;
-import accessone.com.db.CardholderDAO;
+import com.accessone.core.Cardholder;
+import com.accessone.db.CardholderDAO;
 import com.codahale.metrics.annotation.Timed;
 import com.google.common.base.Optional;
-import com.google.common.collect.ImmutableMap;
 import io.dropwizard.hibernate.UnitOfWork;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 

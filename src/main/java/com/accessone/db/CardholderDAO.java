@@ -1,6 +1,6 @@
-package accessone.com.db;
+package com.accessone.db;
 
-import accessone.com.core.Cardholder;
+import com.accessone.core.Cardholder;
 import com.google.common.base.Optional;
 import io.dropwizard.hibernate.AbstractDAO;
 import org.hibernate.Query;

@@ -1,4 +1,4 @@
-package accessone.com.core;
+package com.accessone.core;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -143,7 +143,6 @@ public class Cardholder
         if (!getSurname().equals(that.getSurname())) return false;
         if (!getEmailAddress().equals(that.getEmailAddress())) return false;
         return getEmployeeNumber().equals(that.getEmployeeNumber());
-
     }
 
     @Override

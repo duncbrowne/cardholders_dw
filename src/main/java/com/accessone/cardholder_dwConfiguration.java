@@ -1,12 +1,13 @@
-package accessone.com;
+package com.accessone;
 
 import io.dropwizard.Configuration;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.dropwizard.client.JerseyClientConfiguration;
 import io.dropwizard.db.DataSourceFactory;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
 
-public class cardholder_dropwizardConfiguration extends Configuration {
+public class cardholder_dwConfiguration extends Configuration {
 
     private String serviceId = "RESTAPIHelper";
     private String serviceName = "RESTAPIHelperName";
@@ -45,5 +46,14 @@ public class cardholder_dropwizardConfiguration extends Configuration {
     public void setDataSourceFactory(DataSourceFactory dataSourceFactory)
     {
         this.database = dataSourceFactory;
+    }
+
+    @Valid
+    @NotNull
+    private JerseyClientConfiguration httpClient = new JerseyClientConfiguration();
+
+    @JsonProperty("httpClient")
+    public JerseyClientConfiguration getJerseyClientConfiguration() {
+        return httpClient;
     }
 }
