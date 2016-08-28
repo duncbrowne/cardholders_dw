@@ -29,12 +29,6 @@ public class CardholderDAO extends AbstractDAO<Cardholder>{
 
     public Cardholder create(Cardholder cardholder)
     {
-        DateTime now = new DateTime();
-        DateTimeFormatter fmt = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
-        String nowAsString = fmt.print(now);
-        cardholder.setDateCreated(nowAsString);
-        cardholder.setLastModified(nowAsString);
-
         return persist(cardholder);
     }
 
@@ -51,7 +45,7 @@ public class CardholderDAO extends AbstractDAO<Cardholder>{
 
     public List<Cardholder> getByRange(int from, int to)
     {
-        Query query = currentSession().createQuery("from Cardholder b order by b.CardholderID").
+        Query query = currentSession().createQuery("from Cardholder b order by b.cardholderID").
                 setFirstResult(from).setMaxResults((to - from) + 1);
         return query.list();
     }

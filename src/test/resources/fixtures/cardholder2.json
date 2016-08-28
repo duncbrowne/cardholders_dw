@@ -5,7 +5,5 @@
   "surname": "TestSurname2",
   "employeeNumber": "TestEmpNo2",
   "departmentID": 2,
-  "emailAddress": "TestEmailAddress2",
-  "dateCreated": "2016-08-24 16:22:00",
-  "lastModified": "2016-08-24 16:22:00"
+  "emailAddress": "TestEmailAddress2"
 }
