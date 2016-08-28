@@ -133,13 +133,6 @@ public class CardholderResourceIntegrationTest extends IntegrationTest {
                 .request()
                 .get(Cardholder.class);
 
-//        cardholderOld.setTitle("Test");
-//        cardholderOld.setFirstName("TestFirstName");
-//        cardholderOld.setSurname("TestSurname");
-//        cardholderOld.setEmployeeNumber("TestEN");
-//        cardholderOld.setDepartmentID(1);
-//        cardholderOld.setEmailAddress("TestEmailAddress");
-
         Response response = client.target(generateURI("/cardholders/99999"))
                 .request()
                 .post(Entity.entity(cardholderOld, MediaType.APPLICATION_JSON_TYPE));

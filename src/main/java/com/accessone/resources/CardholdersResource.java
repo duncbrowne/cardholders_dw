@@ -66,7 +66,9 @@ public class CardholdersResource
     @Path("/{cardholderid}")
     public void updateCardholder(@PathParam("cardholderid") Long cardholderID, Cardholder newCardholder)
     {
-        //Cardholder cardholder = findSafely(cardholderID.longValue());
+        // This line doesn't look necessary but it is!  Without it a new record will be created regardless
+        // of the cardholderID.  This line gives a 404 exception which is what you want.
+        Cardholder cardholder = findSafely(cardholderID.longValue());
         newCardholder.setCardholderID(cardholderID);
         cardholderDAO.update(newCardholder);
     }
