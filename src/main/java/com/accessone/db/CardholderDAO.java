@@ -5,6 +5,9 @@ import com.google.common.base.Optional;
 import io.dropwizard.hibernate.AbstractDAO;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 import javax.ws.rs.NotFoundException;
 import java.util.List;
@@ -26,6 +29,12 @@ public class CardholderDAO extends AbstractDAO<Cardholder>{
 
     public Cardholder create(Cardholder cardholder)
     {
+        DateTime now = new DateTime();
+        DateTimeFormatter fmt = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
+        String nowAsString = fmt.print(now);
+        cardholder.setDateCreated(nowAsString);
+        cardholder.setLastModified(nowAsString);
+
         return persist(cardholder);
     }
 

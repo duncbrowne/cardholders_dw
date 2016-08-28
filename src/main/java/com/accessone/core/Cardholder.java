@@ -1,7 +1,11 @@
 package com.accessone.core;
 
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+
 import javax.persistence.*;
-import java.util.Date;
 
 /**
  * Current Project cardholder_dropwizard
@@ -21,8 +25,8 @@ public class Cardholder
     private String employeeNumber;
     private long departmentID;
     private String emailAddress;
-    private Date dateCreated;
-    private Date lastModified;
+    private DateTime dateCreated;
+    private DateTime lastModified;
 
     public Cardholder() {
     }
@@ -37,6 +41,21 @@ public class Cardholder
         this.employeeNumber = employeeNumber;
         this.emailAddress = emailAddress;
         this.departmentID = departmentID;
+    }
+
+    public Cardholder(long cardholderID, String title, String firstName, String surname,
+                      String employeeNumber, long departmentID, String emailAddress,
+                      DateTime dateCreated, DateTime lastModified)
+    {
+        this.cardholderID = cardholderID;
+        this.title = title;
+        this.firstName = firstName;
+        this.surname = surname;
+        this.employeeNumber = employeeNumber;
+        this.emailAddress = emailAddress;
+        this.departmentID = departmentID;
+        this.dateCreated = dateCreated;
+        this.lastModified = lastModified;
     }
 
     public long getCardholderID()
@@ -111,23 +130,30 @@ public class Cardholder
 
     public String getDateCreated()
     {
-        return dateCreated.toString();
+        DateTimeFormatter fmt = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
+        return fmt.print(dateCreated);
     }
 
-    public void setDateCreated (Date dateCreated)
+    public void setDateCreated (String dateCreatedAsString)
     {
-        this.dateCreated = dateCreated;
+        dateCreated = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")
+                .parseDateTime(dateCreatedAsString)
+                .withZone(DateTimeZone.getDefault());
     }
 
     public String getLastModified()
     {
-        return lastModified.toString();
+        DateTimeFormatter fmt = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
+        return fmt.print(lastModified);
     }
 
-    public void setLastModified(Date lastModified)
+    public void setLastModified (String lastModifiedAsString)
     {
-        this.lastModified = lastModified;
+        lastModified = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")
+                .parseDateTime(lastModifiedAsString)
+                .withZone(DateTimeZone.getDefault());
     }
+
     @Override
     public boolean equals(Object o)
     {
