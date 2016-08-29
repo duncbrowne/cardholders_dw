@@ -51,7 +51,7 @@ public class CardholderResourceIntegrationTest {
                     .request()
                     .post(Entity.entity(cardholder, MediaType.APPLICATION_JSON_TYPE))
                     .readEntity(Cardholder.class);
-            assertThat(newCardholder.getCardholderID()).isEqualTo(i+1);
+            assertThat(newCardholder.getId()).isEqualTo(i+1);
             assertThat(newCardholder.getTitle()).isEqualTo(cardholder.getTitle());
             assertThat(newCardholder.getFirstName()).isEqualTo(cardholder.getFirstName());
             assertThat(newCardholder.getSurname()).isEqualTo(cardholder.getSurname());
@@ -79,7 +79,7 @@ public class CardholderResourceIntegrationTest {
         for(int i = 0; i < listCardholders.size(); i++)
         {
             Cardholder cardholder = listCardholders.get(i);
-            Cardholder cardholderGet = client.target(generateURI("/cardholders/" + cardholder.getCardholderID()))
+            Cardholder cardholderGet = client.target(generateURI("/cardholders/" + cardholder.getId()))
                     .request()
                     .get(Cardholder.class);
             assertThat(cardholderGet).isEqualTo(cardholder);
@@ -163,7 +163,7 @@ public class CardholderResourceIntegrationTest {
         for(int i = 0; i < listCardholders.size(); i++)
         {
             Cardholder cardholder = listCardholders.get(i);
-            client.target(generateURI("/cardholders/" + cardholder.getCardholderID()))
+            client.target(generateURI("/cardholders/" + cardholder.getId()))
                     .request()
                     .delete();
         }

@@ -3,6 +3,11 @@ package com.accessone;
 import com.accessone.core.Cardholder;
 import com.accessone.db.CardholderDAO;
 import com.accessone.resources.CardholdersResource;
+import com.accessone.resources.Component;
+import com.accessone.resources.HAL.CardholdersResourceHAL;
+import com.accessone.resources.HAL.CardholdersServiceEntryPointResourceHAL;
+import com.accessone.resources.HAL.RESTComponentResourceHAL;
+import com.accessone.resources.RESTComponentResource;
 import io.dropwizard.Application;
 import io.dropwizard.db.DataSourceFactory;
 import io.dropwizard.hibernate.HibernateBundle;
@@ -10,6 +15,8 @@ import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.assets.AssetsBundle;
 import io.dropwizard.migrations.MigrationsBundle;
 import io.dropwizard.setup.Environment;
+
+import java.util.HashMap;
 
 /**
  * This is the main ClassholderApp class.  It is where the main methode resides.
@@ -61,13 +68,34 @@ public class CardholderApp extends Application<CardholderConfig> {
     @Override
     public void run(final CardholderConfig configuration,
                     final Environment environment) {
+
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        // Demo Resource
+        // Components Resource
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        HashMap<String,Component> components = new HashMap<String,Component>();
+
+        final Component componentNodeRoot = new Component("root","CardholdersService",null);
+        components.put(componentNodeRoot.getId(), componentNodeRoot);
+        final RESTComponentResource componentResource = new RESTComponentResource(components);
+        environment.jersey().register(componentResource);
+        RESTComponentResourceHAL componentResourceHAL = new RESTComponentResourceHAL(componentResource);
+        environment.jersey().register(componentResourceHAL);
+
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        // Cardholder Resource
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         final CardholderDAO cardholderDAO = new CardholderDAO(hibernateBundle.getSessionFactory());
         final CardholdersResource cardholdersResource =
-                new CardholdersResource(cardholderDAO);
+                new CardholdersResource("cardholderResource", "cardholderResource", cardholderDAO);
         environment.jersey().register(cardholdersResource);
+        environment.jersey().register(new CardholdersResourceHAL(cardholdersResource));
+
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        // EntryPoint Resource
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        final CardholdersServiceEntryPointResourceHAL entryPointResourceHAL =
+                new CardholdersServiceEntryPointResourceHAL("CardholderService","CardholderService");
+        environment.jersey().register(entryPointResourceHAL);
     }
 
 }

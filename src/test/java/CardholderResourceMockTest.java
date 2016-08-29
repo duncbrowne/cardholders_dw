@@ -24,7 +24,7 @@ public class CardholderResourceMockTest
 
     @ClassRule
     public static final ResourceTestRule resources = ResourceTestRule.builder()
-            .addResource(new CardholdersResource(mockCardholderDAO))
+            .addResource(new CardholdersResource("cardholderResource", "cardholderResource", mockCardholderDAO))
             .build();
 
     @Before

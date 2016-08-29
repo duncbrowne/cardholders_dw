@@ -1,0 +1,19 @@
+{
+  "_links": {
+    "self": {
+      "href": "http://127.0.0.1:8082/hal"
+    },
+    "cardholders": {
+      "href": "http://127.0.0.1:8082/hal/cardholders"
+    },
+    "components": {
+      "href": "http://127.0.0.1:8082/hal/components"
+    },
+    "uis": {
+      "href": "http://127.0.0.1:8082/hal/uis"
+    }
+  },
+  "id": "CardholderService",
+  "name": "CardholderService",
+  "version": "1.0.0"
+}

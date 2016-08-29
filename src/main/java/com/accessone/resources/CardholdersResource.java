@@ -10,7 +10,10 @@ import com.google.common.collect.ImmutableMap;
 import io.dropwizard.hibernate.UnitOfWork;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import java.util.List;
 
@@ -22,7 +25,7 @@ import static net.logstash.logback.marker.Markers.appendEntries;
  */
 @Path("/cardholders")
 @Produces(MediaType.APPLICATION_JSON)
-public class CardholdersResource
+public class CardholdersResource extends RESTResource
 {
     private final CardholderDAO cardholderDAO;
     private static final Logger LOGGER = LoggerFactory.getLogger(CardholdersResource.class);
@@ -30,10 +33,11 @@ public class CardholdersResource
     private final Meter meterRequests = metrics.meter(MetricRegistry.name(CardholdersResource.class, "Meter"));
 
     /**
-     * @param cardholderDAO This is the Data object that represents the cardholder table in the database
+     * @param cardholderDAO This is the Data object that represents the cardholder table in the database.
      */
-    public CardholdersResource(CardholderDAO cardholderDAO)
+    public CardholdersResource(String id, String name, CardholderDAO cardholderDAO)
     {
+        super(id, name);
         this.cardholderDAO = cardholderDAO;
     }
 
@@ -99,7 +103,7 @@ public class CardholdersResource
         // This line doesn't look necessary but it is!  Without it a new record will be created regardless
         // of the cardholderID.  This line gives a 404 exception which is what you want.
         findSafely(cardholderID.longValue());
-        newCardholder.setCardholderID(cardholderID);
+        newCardholder.setId(cardholderID);
         cardholderDAO.update(newCardholder);
     }
 
@@ -114,6 +118,19 @@ public class CardholdersResource
     public void delete(@PathParam("cardholderid") Long cardholderID)
     {
         cardholderDAO.delete(cardholderID.longValue());
+    }
+
+    @POST
+    @Timed
+    @UnitOfWork
+    @Path("/subscribe")
+    public String subscribe(@QueryParam("clientURL") String clientURL, @Context HttpServletRequest request) {
+        return "ok";
+    }
+
+    public int getCount()
+    {
+        return cardholderDAO.findAll().size();
     }
 
     protected Cardholder findSafely(long cardholderID)

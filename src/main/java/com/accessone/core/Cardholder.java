@@ -50,12 +50,12 @@ public class Cardholder
         this.departmentID = departmentID;
     }
 
-    public long getCardholderID()
+    public long getId()
     {
         return cardholderID;
     }
 
-    public void setCardholderID(long cardholderID)
+    public void setId(long cardholderID)
     {
         this.cardholderID = cardholderID;
     }
@@ -130,11 +130,11 @@ public class Cardholder
 
         Cardholder that = (Cardholder) o;
 
-        if (getCardholderID() != that.getCardholderID())
+        if (getId() != that.getId())
             return false;
         if (getDepartmentID() != that.getDepartmentID())
             return false;
-        if (!title.equals(that.title))
+        if (!getTitle().equals(that.getTitle()))
             return false;
         if (!getFirstName().equals(that.getFirstName()))
             return false;
@@ -148,7 +148,7 @@ public class Cardholder
     @Override
     public int hashCode()
     {
-        int result = (int) (getCardholderID() ^ (getCardholderID() >>> 32));
+        int result = (int) (getId() ^ (getId() >>> 32));
         result = 31 * result + title.hashCode();
         result = 31 * result + getFirstName().hashCode();
         result = 31 * result + getSurname().hashCode();
