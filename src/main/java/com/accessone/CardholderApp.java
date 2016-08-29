@@ -11,39 +11,46 @@ import io.dropwizard.assets.AssetsBundle;
 import io.dropwizard.migrations.MigrationsBundle;
 import io.dropwizard.setup.Environment;
 
-public class cardholder_dwApplication extends Application<cardholder_dwConfiguration> {
+/**
+ * This is the main ClassholderApp class.  It is where the main methode resides.
+ */
+public class CardholderApp extends Application<CardholderConfig> {
 
+    private final HibernateBundle<CardholderConfig> hibernateBundle =
+            new HibernateBundle<CardholderConfig>(Cardholder.class)
+            {
+                @Override
+                public DataSourceFactory getDataSourceFactory(CardholderConfig configuration)
+                {
+                    return configuration.getDataSourceFactory();
+                }
+
+            };
+
+    /**
+     * The main method for the Cardholder_dw service
+     * @param args takes two arguments.  The first is "server" and the second is the name of the config (YAML)
+     *             file to be used
+     * @throws Exception Any exception that is not handled in normal operation.
+     */
     public static void main(final String[] args) throws Exception
     {
-        new cardholder_dwApplication().run(args);
+        new CardholderApp().run(args);
     }
-
-    private final HibernateBundle<cardholder_dwConfiguration> hibernateBundle =
-        new HibernateBundle<cardholder_dwConfiguration>(Cardholder.class)
-    {
-        @Override
-        public DataSourceFactory getDataSourceFactory(cardholder_dwConfiguration configuration)
-        {
-            return configuration.getDataSourceFactory();
-        }
-
-    };
-
-
 
     @Override
     public String getName() {
-        return "cardholder_dz";
+        return "cardholder_dw";
     }
 
     @Override
-    public void initialize(final Bootstrap<cardholder_dwConfiguration> bootstrap)
+    public void initialize(final Bootstrap<CardholderConfig> bootstrap)
     {
         bootstrap.addBundle(new AssetsBundle());
 
-        bootstrap.addBundle(new MigrationsBundle<cardholder_dwConfiguration>() {
+        bootstrap.addBundle(new MigrationsBundle<CardholderConfig>() {
             @Override
-            public DataSourceFactory getDataSourceFactory(cardholder_dwConfiguration configuration) {
+            public DataSourceFactory getDataSourceFactory(CardholderConfig configuration) {
                 return configuration.getDataSourceFactory();
             }
         });
@@ -52,7 +59,7 @@ public class cardholder_dwApplication extends Application<cardholder_dwConfigura
     }
 
     @Override
-    public void run(final cardholder_dwConfiguration configuration,
+    public void run(final CardholderConfig configuration,
                     final Environment environment) {
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         // Demo Resource

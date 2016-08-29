@@ -21,9 +21,23 @@ public class Cardholder
     private long departmentID;
     private String emailAddress;
 
+    /**
+     * The default constructor for the Cardholder class.
+     */
     public Cardholder() {
+        // This is a default constructor that is necessary for some of the hibernate operations.
     }
 
+    /**
+     * The Cardholder class constructor with values set.
+     * @param cardholderID The Cardholder ID of the Cardholder
+     * @param title The title of the Cardholder.
+     * @param firstName The first name of the Cardholder.
+     * @param surname The surname of the Cardholder.
+     * @param employeeNumber The employee number of the Cardholder.
+     * @param departmentID The department ID of the Cardholder.
+     * @param emailAddress The email address of the Cardholder
+     */
     public Cardholder(long cardholderID, String title, String firstName, String surname,
                       String employeeNumber, long departmentID, String emailAddress)
     {
@@ -109,17 +123,25 @@ public class Cardholder
     @Override
     public boolean equals(Object o)
     {
-        if (this == o) return true;
-        if (!(o instanceof Cardholder)) return false;
+        if (this == o)
+            return true;
+        if (!(o instanceof Cardholder))
+            return false;
 
         Cardholder that = (Cardholder) o;
 
-        if (getCardholderID() != that.getCardholderID()) return false;
-        if (getDepartmentID() != that.getDepartmentID()) return false;
-        if (!title.equals(that.title)) return false;
-        if (!getFirstName().equals(that.getFirstName())) return false;
-        if (!getSurname().equals(that.getSurname())) return false;
-        if (!getEmailAddress().equals(that.getEmailAddress())) return false;
+        if (getCardholderID() != that.getCardholderID())
+            return false;
+        if (getDepartmentID() != that.getDepartmentID())
+            return false;
+        if (!title.equals(that.title))
+            return false;
+        if (!getFirstName().equals(that.getFirstName()))
+            return false;
+        if (!getSurname().equals(that.getSurname()))
+            return false;
+        if (!getEmailAddress().equals(that.getEmailAddress()))
+            return false;
         return getEmployeeNumber().equals(that.getEmployeeNumber());
     }
 

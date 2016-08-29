@@ -7,7 +7,10 @@ import io.dropwizard.db.DataSourceFactory;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
 
-public class cardholder_dwConfiguration extends Configuration {
+/**
+ * This class stores config information.
+ */
+public class CardholderConfig extends Configuration {
 
     private String serviceId = "RESTAPIHelper";
     private String serviceName = "RESTAPIHelperName";
@@ -15,6 +18,10 @@ public class cardholder_dwConfiguration extends Configuration {
     @Valid
     @NotNull
     private DataSourceFactory database = new DataSourceFactory();
+
+    @Valid
+    @NotNull
+    private JerseyClientConfiguration httpClient = new JerseyClientConfiguration();
 
     public String getServiceId()
     {
@@ -47,10 +54,6 @@ public class cardholder_dwConfiguration extends Configuration {
     {
         this.database = dataSourceFactory;
     }
-
-    @Valid
-    @NotNull
-    private JerseyClientConfiguration httpClient = new JerseyClientConfiguration();
 
     @JsonProperty("httpClient")
     public JerseyClientConfiguration getJerseyClientConfiguration() {

@@ -10,9 +10,7 @@ import com.google.common.collect.ImmutableMap;
 import io.dropwizard.hibernate.UnitOfWork;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.*;
-import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import java.util.List;
 
@@ -26,30 +24,33 @@ import static net.logstash.logback.marker.Markers.appendEntries;
 @Produces(MediaType.APPLICATION_JSON)
 public class CardholdersResource
 {
-    private final CardholderDAO cardholderDAO;private static final Logger LOGGER =
-        LoggerFactory.getLogger(CardholdersResource.class);
+    private final CardholderDAO cardholderDAO;
+    private static final Logger LOGGER = LoggerFactory.getLogger(CardholdersResource.class);
     static final MetricRegistry metrics = new MetricRegistry();
     private final Meter meterRequests = metrics.meter(MetricRegistry.name(CardholdersResource.class, "Meter"));
-//    final Graphite graphite = new Graphite(new InetSocketAddress("localhost", 2003));
-//    final GraphiteReporter reporter = GraphiteReporter.forRegistry(metrics)
-//            .prefixedWith("CardholdersResource")
-//            .convertRatesTo(TimeUnit.SECONDS)
-//            .convertDurationsTo(TimeUnit.MILLISECONDS)
-//            .filter(MetricFilter.ALL)
-//            .build(graphite);
 
+    /**
+     * @param cardholderDAO This is the Data object that represents the cardholder table in the database
+     */
     public CardholdersResource(CardholderDAO cardholderDAO)
     {
         this.cardholderDAO = cardholderDAO;
     }
 
+    /**
+     * Brings back a list of cardholders.  The default is to bring back all cardholders in the table, but the range
+     * can be specified also.
+     * @param from This is the starting index of the records to be retrieved.
+     * @param to This is the ending index of the records to be retrieved.
+     * @return The list of carholders between the to and from indexes.
+     */
     @GET
     @Timed
     @UnitOfWork
     public List<Cardholder> items(@QueryParam("from") @DefaultValue("-1") int from , @QueryParam("to") @DefaultValue("-1") int to)
     {
         this.meterRequests.mark();
-        List<Cardholder> cardholderList = null;
+        List<Cardholder> cardholderList;
         if(from != -1 && to != -1)
             cardholderList = cardholderDAO.getByRange(from,to);
         else
@@ -57,6 +58,11 @@ public class CardholdersResource
         return cardholderList;
     }
 
+    /**
+     * Retrieve a specific cardholder record from the database, as specified by the cardholderID.
+     * @param cardholderID the CardholderID of the record to be retrieved.
+     * @return The Cardholder record associated with the given cardholderID.
+     */
     @GET
     @Timed
     @Path("/{cardholderid}")
@@ -66,6 +72,11 @@ public class CardholdersResource
         return findSafely(cardholderID);
     }
 
+    /**
+     * Creates a cardholder record in the associated database.
+     * @param cardholder The cardholder record to be added to the database.
+     * @return The Cardholder record that was added to the database.
+     */
     @POST
     @Timed
     @UnitOfWork
@@ -74,6 +85,11 @@ public class CardholdersResource
         return cardholderDAO.create(cardholder);
     }
 
+    /**
+     * Updates an existing Cardholder database record.
+     * @param cardholderID The cardholderId of the record to be updated.
+     * @param newCardholder The Cardholder object that has the new values to be updated in the database.
+     */
     @POST
     @Timed
     @UnitOfWork
@@ -82,11 +98,15 @@ public class CardholdersResource
     {
         // This line doesn't look necessary but it is!  Without it a new record will be created regardless
         // of the cardholderID.  This line gives a 404 exception which is what you want.
-        Cardholder cardholder = findSafely(cardholderID.longValue());
+        findSafely(cardholderID.longValue());
         newCardholder.setCardholderID(cardholderID);
         cardholderDAO.update(newCardholder);
     }
 
+    /**
+     * Delete a Cardholder record from the database.
+     * @param cardholderID The cardholderID of the Cardholder record that is to be deleted from the database.
+     */
     @DELETE
     @Timed
     @UnitOfWork
@@ -94,20 +114,6 @@ public class CardholdersResource
     public void delete(@PathParam("cardholderid") Long cardholderID)
     {
         cardholderDAO.delete(cardholderID.longValue());
-    }
-
-    @POST
-    @Timed
-    @UnitOfWork
-    @Path("/subscribe")
-    public String subscribe(@QueryParam("clientURL") String clientURL, @Context HttpServletRequest request)
-    {
-        return "ok";
-    }
-
-    public int getCount()
-    {
-        return cardholderDAO.findAll().size();
     }
 
     protected Cardholder findSafely(long cardholderID)
