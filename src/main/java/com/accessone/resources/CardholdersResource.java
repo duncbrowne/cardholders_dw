@@ -2,16 +2,21 @@ package com.accessone.resources;
 
 import com.accessone.core.Cardholder;
 import com.accessone.db.CardholderDAO;
+import com.codahale.metrics.Meter;
+import com.codahale.metrics.MetricRegistry;
 import com.codahale.metrics.annotation.Timed;
 import com.google.common.base.Optional;
+import com.google.common.collect.ImmutableMap;
 import io.dropwizard.hibernate.UnitOfWork;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicLong;
+
+import static net.logstash.logback.marker.Markers.appendEntries;
 
 /**
  * Current Project cardholder_dropwizard
@@ -21,13 +26,21 @@ import java.util.concurrent.atomic.AtomicLong;
 @Produces(MediaType.APPLICATION_JSON)
 public class CardholdersResource
 {
-    private final CardholderDAO cardholderDAO;
-    private final AtomicLong counter;
+    private final CardholderDAO cardholderDAO;private static final Logger LOGGER =
+        LoggerFactory.getLogger(CardholdersResource.class);
+    static final MetricRegistry metrics = new MetricRegistry();
+    private final Meter meterRequests = metrics.meter(MetricRegistry.name(CardholdersResource.class, "Meter"));
+//    final Graphite graphite = new Graphite(new InetSocketAddress("localhost", 2003));
+//    final GraphiteReporter reporter = GraphiteReporter.forRegistry(metrics)
+//            .prefixedWith("CardholdersResource")
+//            .convertRatesTo(TimeUnit.SECONDS)
+//            .convertDurationsTo(TimeUnit.MILLISECONDS)
+//            .filter(MetricFilter.ALL)
+//            .build(graphite);
 
     public CardholdersResource(CardholderDAO cardholderDAO)
     {
         this.cardholderDAO = cardholderDAO;
-        this.counter = new AtomicLong();
     }
 
     @GET
@@ -35,6 +48,7 @@ public class CardholdersResource
     @UnitOfWork
     public List<Cardholder> items(@QueryParam("from") @DefaultValue("-1") int from , @QueryParam("to") @DefaultValue("-1") int to)
     {
+        this.meterRequests.mark();
         List<Cardholder> cardholderList = null;
         if(from != -1 && to != -1)
             cardholderList = cardholderDAO.getByRange(from,to);
@@ -101,6 +115,14 @@ public class CardholdersResource
         final Optional<Cardholder> cardholder = cardholderDAO.findByCardholderID(cardholderID);
         if (!cardholder.isPresent())
         {
+            LOGGER.error(
+                    appendEntries(
+                            new ImmutableMap.Builder<String, Object>()
+                                    .put("cardholderID", cardholderID)
+                                    .build()
+                    ),
+                    "Cardholder not found");
+
             throw new NotFoundException("No such cardholder.");
         }
         return cardholder.get();
