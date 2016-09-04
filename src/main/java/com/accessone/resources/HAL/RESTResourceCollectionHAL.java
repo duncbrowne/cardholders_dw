@@ -22,10 +22,10 @@ public class RESTResourceCollectionHAL extends RESTResourceHAL {
     public Representation getRepresentation() {
         Representation representation = super.getRepresentation();
         List objectCapabilities = this.capabilities.getValue();
-        Iterator var3 = objectCapabilities.iterator();
+        Iterator iter = objectCapabilities.iterator();
 
-        while(var3.hasNext()) {
-            Capability o = (Capability)var3.next();
+        while(iter.hasNext()) {
+            Capability o = (Capability)iter.next();
             representation.withLink(o.getLink(), this.generateURI(o.getPath()));
         }
 
@@ -34,20 +34,19 @@ public class RESTResourceCollectionHAL extends RESTResourceHAL {
         return representation;
     }
 
-    public Representation getRepresentation(List<?> objects) {
+    public Representation getRepresentation(List<?> objects, Range range) {
         Representation representation = representationFactory.newRepresentation();
         Optional objectCapability = this.capabilities.getCapability(Capability.OC_ALL_LOOKUP);
         if(objectCapability.isPresent()) {
             representation.withLink("self", this.generateURI(((Capability)objectCapability.get()).getPath()));
         }
 
-        Range range = new Range(-1, -1);
         representation.withProperty("range", range);
         if(objects.size() > 0) {
-            Iterator var5 = objects.iterator();
+            Iterator iter = objects.iterator();
 
-            while(var5.hasNext()) {
-                Object object = var5.next();
+            while(iter.hasNext()) {
+                Object object = iter.next();
                 representation.withRepresentation("items", this.getRepresentation(object));
             }
         } else {
@@ -55,6 +54,11 @@ public class RESTResourceCollectionHAL extends RESTResourceHAL {
         }
 
         return representation;
+    }
+
+    public Representation getRepresentation(List<?> objects) {
+        Range range = new Range(-1, -1);
+        return getRepresentation(objects, range);
     }
 
     public Representation getRepresentation(Object object) {
@@ -65,8 +69,8 @@ public class RESTResourceCollectionHAL extends RESTResourceHAL {
         try {
             Method e = object.getClass().getMethod("getId", new Class[0]);
             representation.withLink("self", this.generateURI("/" + e.invoke(object, new Object[0])));
-        } catch (Exception var4) {
-            var4.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
         return representation;

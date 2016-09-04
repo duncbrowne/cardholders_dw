@@ -2,6 +2,7 @@ package com.accessone.resources.HAL;
 
 import com.accessone.resources.Capability;
 import com.accessone.resources.CardholdersResource;
+import com.accessone.resources.Range;
 import com.theoryinpractise.halbuilder.api.RepresentationFactory;
 import io.dropwizard.hibernate.UnitOfWork;
 
@@ -41,7 +42,8 @@ public class CardholdersResourceHAL extends RESTResourceCollectionHAL {
     @GET
     @UnitOfWork
     public String items(@QueryParam("from") @DefaultValue("-1") int from , @QueryParam("to") @DefaultValue("-1") int to) {
-        return getRepresentation(cardholdersResource.items(from, to)).toString(RepresentationFactory.HAL_JSON);
+        Range range = new Range(from, to);
+        return getRepresentation(cardholdersResource.items(from, to), range).toString(RepresentationFactory.HAL_JSON);
     }
 
     @POST

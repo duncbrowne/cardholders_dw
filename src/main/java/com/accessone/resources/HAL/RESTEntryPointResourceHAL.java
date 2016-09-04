@@ -25,6 +25,10 @@ public class RESTEntryPointResourceHAL extends RESTResourceHAL {
     }
 
     public Representation getRepresentation() {
-        return representationFactory.newRepresentation().withLink("self", this.generateURI()).withLink("components", this.generateURI("/components")).withLink("uis", this.generateURI("/uis")).withProperty("id", this.getId()).withProperty("name", this.getName()).withProperty("version", "1.0.0");
+        return representationFactory.newRepresentation().withLink("self", this.generateURI()).
+                withLink("components", this.generateURI("/components")).
+                withLink("uis", this.generateURI("/uis")).
+                withProperty("id", this.getId()).withProperty("name", this.getName()).
+                withProperty("version", "1.0.0");
     }
 }
