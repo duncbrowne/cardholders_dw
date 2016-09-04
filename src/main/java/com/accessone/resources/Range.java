@@ -11,9 +11,6 @@ public class Range {
     private String to;
     private String type;
 
-    public Range() {
-    }
-
     public Range(int from, int to) {
         if(to == -1 && from == -1) {
             this.to = "Last";
@@ -69,17 +66,35 @@ public class Range {
         this.page = page;
     }
 
-    public boolean equals(Object o) {
-        if(this == o) {
+    @Override
+    public boolean equals(Object obj) {
+        if(this == obj)
+        {
             return true;
-        } else if(o != null && this.getClass() == o.getClass()) {
-            Range range = (Range)o;
-            return this.isComplete != range.isComplete?false:(this.page != range.page?false:(!this.from.equals(range.from)?false:(!this.to.equals(range.to)?false:this.type.equals(range.type))));
-        } else {
+        }
+        else if(obj != null && this.getClass() == obj.getClass())
+        {
+            Range range = (Range)obj;
+            if (this.isComplete != range.isComplete)
+                return false;
+            if (this.page != range.page)
+                return false;
+            if (!this.from.equals(range.from))
+                return false;
+            if (!this.to.equals(range.to))
+                return false;
+            if (!this.type.equals(range.type))
+                return false;
+
+            return true;
+        }
+        else
+        {
             return false;
         }
     }
 
+    @Override
     public int hashCode() {
         int result = this.from.hashCode();
         result = 31 * result + (this.isComplete?1:0);

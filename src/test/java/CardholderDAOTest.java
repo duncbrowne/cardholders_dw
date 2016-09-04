@@ -3,19 +3,13 @@ import com.accessone.db.CardholderDAO;
 import com.accessone.resources.CardholdersResource;
 import com.google.common.base.Optional;
 import io.dropwizard.testing.junit.ResourceTestRule;
-import org.joda.time.DateTime;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.ClassRule;
-import org.junit.Test;
 
-import javax.ws.rs.core.Response;
-import java.io.IOException;
-
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
-public class CardholderResourceMockTest
+public class CardholderDAOTest
 {
     private static final CardholderDAO mockCardholderDAO = mock(CardholderDAO.class);
 

@@ -12,23 +12,12 @@ import java.util.Optional;
 public class Capabilities {
     ArrayList<Capability> listCapabilities = new ArrayList();
 
-    public String getEnumType() {
-        return "ENUMTYPE_NPBSInternalAPI_tObjectCaps";
-    }
-
-    public String getPbsType() {
-        return "Flag";
-    }
-
     public List<Capability> getValue() {
         return this.listCapabilities;
     }
 
     public int size() {
         return this.listCapabilities.size();
-    }
-
-    public Capabilities() {
     }
 
     public Optional<Capability> getCapability(Capability capability) {

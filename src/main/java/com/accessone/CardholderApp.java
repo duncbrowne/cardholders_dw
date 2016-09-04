@@ -66,18 +66,6 @@ public class CardholderApp extends Application<CardholderConfig> {
                     final Environment environment) {
 
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        // Components Resource
-        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//        HashMap<String,Component> components = new HashMap<String,Component>();
-//
-//        final Component componentNodeRoot = new Component("root","CardholdersService",null);
-//        components.put(componentNodeRoot.getId(), componentNodeRoot);
-//        final RESTComponentResource componentResource = new RESTComponentResource(components);
-//        environment.jersey().register(componentResource);
-//        RESTComponentResourceHAL componentResourceHAL = new RESTComponentResourceHAL(componentResource);
-//        environment.jersey().register(componentResourceHAL);
-
-        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         // Cardholder Resource
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         final CardholderDAO cardholderDAO = new CardholderDAO(hibernateBundle.getSessionFactory());
@@ -85,13 +73,5 @@ public class CardholderApp extends Application<CardholderConfig> {
                 new CardholdersResource("cardholderResource", "cardholderResource", cardholderDAO);
         environment.jersey().register(cardholdersResource);
         environment.jersey().register(new CardholdersResourceHAL(cardholdersResource));
-
-        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        // EntryPoint Resource
-        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//        final CardholdersServiceEntryPointResourceHAL entryPointResourceHAL =
-//                new CardholdersServiceEntryPointResourceHAL("CardholderService","CardholderService");
-//        environment.jersey().register(entryPointResourceHAL);
     }
-
 }

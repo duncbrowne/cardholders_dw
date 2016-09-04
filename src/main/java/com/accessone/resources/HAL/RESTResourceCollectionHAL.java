@@ -3,7 +3,10 @@ package com.accessone.resources.HAL;
 import com.accessone.resources.Capability;
 import com.accessone.resources.Range;
 import com.theoryinpractise.halbuilder.api.Representation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Iterator;
 import java.util.List;
@@ -14,11 +17,15 @@ import java.util.Optional;
  * Created by duncan.browne on 29/08/2016.
  */
 public class RESTResourceCollectionHAL extends RESTResourceHAL {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(RESTResourceCollectionHAL.class);
+
     public RESTResourceCollectionHAL(String id, String name) {
         super(id, name);
         this.setType("Collection");
     }
 
+    @Override
     public Representation getRepresentation() {
         Representation representation = super.getRepresentation();
         List objectCapabilities = this.capabilities.getValue();
@@ -61,7 +68,8 @@ public class RESTResourceCollectionHAL extends RESTResourceHAL {
         return getRepresentation(objects, range);
     }
 
-    public Representation getRepresentation(Object object) {
+    public Representation getRepresentation(Object object)
+    {
         Representation representation = representationFactory.newRepresentation();
         this.withBean(object.getClass(), object, representation);
         representation.withLink("collection", this.generateURI());
@@ -70,7 +78,8 @@ public class RESTResourceCollectionHAL extends RESTResourceHAL {
             Method e = object.getClass().getMethod("getId", new Class[0]);
             representation.withLink("self", this.generateURI("/" + e.invoke(object, new Object[0])));
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.error("exception thrown {} when attempting to create representation by getId",
+                    e.toString());
         }
 
         return representation;
