@@ -3,11 +3,7 @@ package com.accessone;
 import com.accessone.core.Cardholder;
 import com.accessone.db.CardholderDAO;
 import com.accessone.resources.CardholdersResource;
-import com.accessone.resources.Component;
 import com.accessone.resources.HAL.CardholdersResourceHAL;
-import com.accessone.resources.HAL.CardholdersServiceEntryPointResourceHAL;
-import com.accessone.resources.HAL.RESTComponentResourceHAL;
-import com.accessone.resources.RESTComponentResource;
 import io.dropwizard.Application;
 import io.dropwizard.db.DataSourceFactory;
 import io.dropwizard.hibernate.HibernateBundle;
@@ -72,14 +68,14 @@ public class CardholderApp extends Application<CardholderConfig> {
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         // Components Resource
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        HashMap<String,Component> components = new HashMap<String,Component>();
-
-        final Component componentNodeRoot = new Component("root","CardholdersService",null);
-        components.put(componentNodeRoot.getId(), componentNodeRoot);
-        final RESTComponentResource componentResource = new RESTComponentResource(components);
-        environment.jersey().register(componentResource);
-        RESTComponentResourceHAL componentResourceHAL = new RESTComponentResourceHAL(componentResource);
-        environment.jersey().register(componentResourceHAL);
+//        HashMap<String,Component> components = new HashMap<String,Component>();
+//
+//        final Component componentNodeRoot = new Component("root","CardholdersService",null);
+//        components.put(componentNodeRoot.getId(), componentNodeRoot);
+//        final RESTComponentResource componentResource = new RESTComponentResource(components);
+//        environment.jersey().register(componentResource);
+//        RESTComponentResourceHAL componentResourceHAL = new RESTComponentResourceHAL(componentResource);
+//        environment.jersey().register(componentResourceHAL);
 
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         // Cardholder Resource
@@ -93,9 +89,9 @@ public class CardholderApp extends Application<CardholderConfig> {
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         // EntryPoint Resource
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        final CardholdersServiceEntryPointResourceHAL entryPointResourceHAL =
-                new CardholdersServiceEntryPointResourceHAL("CardholderService","CardholderService");
-        environment.jersey().register(entryPointResourceHAL);
+//        final CardholdersServiceEntryPointResourceHAL entryPointResourceHAL =
+//                new CardholdersServiceEntryPointResourceHAL("CardholderService","CardholderService");
+//        environment.jersey().register(entryPointResourceHAL);
     }
 
 }

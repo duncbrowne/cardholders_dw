@@ -12,8 +12,7 @@ public class Cardholder
 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long cardholderID;
-
+    private long id;
     private String title;
     private String firstName;
     private String surname;
@@ -30,7 +29,7 @@ public class Cardholder
 
     /**
      * The Cardholder class constructor with values set.
-     * @param cardholderID The Cardholder ID of the Cardholder
+     * @param id The Cardholder ID of the Cardholder
      * @param title The title of the Cardholder.
      * @param firstName The first name of the Cardholder.
      * @param surname The surname of the Cardholder.
@@ -38,10 +37,10 @@ public class Cardholder
      * @param departmentID The department ID of the Cardholder.
      * @param emailAddress The email address of the Cardholder
      */
-    public Cardholder(long cardholderID, String title, String firstName, String surname,
+    public Cardholder(long id, String title, String firstName, String surname,
                       String employeeNumber, long departmentID, String emailAddress)
     {
-        this.cardholderID = cardholderID;
+        this.id = id;
         this.title = title;
         this.firstName = firstName;
         this.surname = surname;
@@ -52,12 +51,12 @@ public class Cardholder
 
     public long getId()
     {
-        return cardholderID;
+        return id;
     }
 
     public void setId(long cardholderID)
     {
-        this.cardholderID = cardholderID;
+        this.id = cardholderID;
     }
 
     public String getTitle()

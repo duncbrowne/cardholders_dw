@@ -48,7 +48,7 @@ public class CardholdersResource extends RESTResource
      * @param to This is the ending index of the records to be retrieved.
      * @return The list of carholders between the to and from indexes.
      */
-    @GET
+//    @GET
     @Timed
     @UnitOfWork
     public List<Cardholder> items(@QueryParam("from") @DefaultValue("-1") int from , @QueryParam("to") @DefaultValue("-1") int to)
@@ -64,16 +64,14 @@ public class CardholdersResource extends RESTResource
 
     /**
      * Retrieve a specific cardholder record from the database, as specified by the cardholderID.
-     * @param cardholderID the CardholderID of the record to be retrieved.
+     * @param id the CardholderID of the record to be retrieved.
      * @return The Cardholder record associated with the given cardholderID.
      */
-    @GET
     @Timed
-    @Path("/{cardholderid}")
     @UnitOfWork
-    public Cardholder getCardholder(@PathParam("cardholderid") Long cardholderID)
+    public Cardholder getCardholder(@PathParam("id") Long id)
     {
-        return findSafely(cardholderID);
+        return findSafely(id);
     }
 
     /**
@@ -91,41 +89,33 @@ public class CardholdersResource extends RESTResource
 
     /**
      * Updates an existing Cardholder database record.
-     * @param cardholderID The cardholderId of the record to be updated.
+     * @param id The Id of the record to be updated.
      * @param newCardholder The Cardholder object that has the new values to be updated in the database.
      */
     @POST
     @Timed
     @UnitOfWork
-    @Path("/{cardholderid}")
-    public void updateCardholder(@PathParam("cardholderid") Long cardholderID, Cardholder newCardholder)
+    @Path("/{id}")
+    public void updateCardholder(@PathParam("id") Long id, Cardholder newCardholder)
     {
         // This line doesn't look necessary but it is!  Without it a new record will be created regardless
-        // of the cardholderID.  This line gives a 404 exception which is what you want.
-        findSafely(cardholderID.longValue());
-        newCardholder.setId(cardholderID);
+        // of the id.  This line gives a 404 exception which is what you want.
+        findSafely(id.longValue());
+        newCardholder.setId(id);
         cardholderDAO.update(newCardholder);
     }
 
     /**
      * Delete a Cardholder record from the database.
-     * @param cardholderID The cardholderID of the Cardholder record that is to be deleted from the database.
+     * @param id The cardholderID of the Cardholder record that is to be deleted from the database.
      */
     @DELETE
     @Timed
     @UnitOfWork
-    @Path("/{cardholderid}")
-    public void delete(@PathParam("cardholderid") Long cardholderID)
+    @Path("/{id}")
+    public void delete(@PathParam("id") Long id)
     {
-        cardholderDAO.delete(cardholderID.longValue());
-    }
-
-    @POST
-    @Timed
-    @UnitOfWork
-    @Path("/subscribe")
-    public String subscribe(@QueryParam("clientURL") String clientURL, @Context HttpServletRequest request) {
-        return "ok";
+        cardholderDAO.delete(id.longValue());
     }
 
     public int getCount()
@@ -133,15 +123,15 @@ public class CardholdersResource extends RESTResource
         return cardholderDAO.findAll().size();
     }
 
-    protected Cardholder findSafely(long cardholderID)
+    protected Cardholder findSafely(long id)
     {
-        final Optional<Cardholder> cardholder = cardholderDAO.findByCardholderID(cardholderID);
+        final Optional<Cardholder> cardholder = cardholderDAO.findById(id);
         if (!cardholder.isPresent())
         {
             LOGGER.error(
                     appendEntries(
                             new ImmutableMap.Builder<String, Object>()
-                                    .put("cardholderID", cardholderID)
+                                    .put("ID", id)
                                     .build()
                     ),
                     "Cardholder not found");

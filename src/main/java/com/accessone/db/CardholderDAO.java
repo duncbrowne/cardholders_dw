@@ -23,9 +23,9 @@ public class CardholderDAO extends AbstractDAO<Cardholder>{
         super(factory);
     }
 
-    public Optional<Cardholder> findByCardholderID(long cardholderID)
+    public Optional<Cardholder> findById(long id)
     {
-        return Optional.fromNullable(get(cardholderID));
+        return Optional.fromNullable(get(id));
     }
 
     /**
@@ -66,19 +66,19 @@ public class CardholderDAO extends AbstractDAO<Cardholder>{
      */
     public List<Cardholder> getByRange(int from, int to)
     {
-        Query query = currentSession().createQuery("from Cardholder b order by b.cardholderID").
+        Query query = currentSession().createQuery("from Cardholder b order by b.id").
                 setFirstResult(from).setMaxResults((to - from) + 1);
         return query.list();
     }
 
     /**
      * Deletes a Cardholder record in the table.
-     * @param cardholderID The CardholderID value of the record to be deleted.
+     * @param id The CardholderID value of the record to be deleted.
      * @throws NotFoundException If no cardholder exists with the given CardholderID
      */
-    public void delete(long cardholderID)
+    public void delete(long id)
     {
-        final Optional<Cardholder> cardholder = findByCardholderID(cardholderID);
+        final Optional<Cardholder> cardholder = findById(id);
         if (cardholder.isPresent())
         {
             currentSession().delete(cardholder.get());

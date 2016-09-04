@@ -32,18 +32,18 @@ public class Capabilities {
     }
 
     public Optional<Capability> getCapability(Capability capability) {
-        Iterator var2 = this.listCapabilities.iterator();
+        Iterator iter = this.listCapabilities.iterator();
 
-        Capability o;
+        Capability cap;
         do {
-            if(!var2.hasNext()) {
+            if(!iter.hasNext()) {
                 return Optional.empty();
             }
 
-            o = (Capability)var2.next();
-        } while(o.getId() != capability.getId());
+            cap = (Capability)iter.next();
+        } while(cap.getId() != capability.getId());
 
-        return Optional.of(o);
+        return Optional.of(cap);
     }
 
     public void addCapability(Capability capability) {

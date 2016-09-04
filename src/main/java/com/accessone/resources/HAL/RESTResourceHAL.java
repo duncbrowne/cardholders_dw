@@ -33,8 +33,8 @@ public class RESTResourceHAL extends RESTResource
         return this.generateURI();
     }
 
-    public void withBean(Class<?> entity, Object demo, Representation representation) {
-        HALRepresentationHelper.addPropertiesFromPOJO(entity, demo, representation);
+    public void withBean(Class<?> entity, Object cardholder, Representation representation) {
+        HALRepresentationHelper.addPropertiesFromPOJO(entity, cardholder, representation);
     }
 
     public Capabilities getCapabilities() {

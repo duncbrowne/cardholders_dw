@@ -26,21 +26,22 @@ public class HALRepresentationHelper
     {
     }
 
-    public static void addPropertiesFromPOJO(Class<?> entity, Object demo, Representation representation)
+    public static void addPropertiesFromPOJO(Class<?> entity, Object cardholder, Representation representation)
     {
-        Field[] var3 = entity.getDeclaredFields();
-        int var4 = var3.length;
+        Field[] declaredFields = entity.getDeclaredFields();
+        int declaredFieldsLength = declaredFields.length;
 
-        for (int var5 = 0; var5 < var4; ++var5)
+        for (int i = 0; i < declaredFieldsLength; ++i)
         {
-            Field field = var3[var5];
+            Field field = declaredFields[i];
             if (!field.isAnnotationPresent(JsonIgnore.class))
             {
                 try
                 {
-                    representation.withProperty(field.getName(), (new PropertyDescriptor(field.getName(), demo.getClass())).getReadMethod().invoke(demo, new Object[0]));
+                    representation.withProperty(field.getName(), (new PropertyDescriptor(field.getName(),
+                            cardholder.getClass())).getReadMethod().invoke(cardholder, new Object[0]));
                 }
-                catch (Exception var8)
+                catch (Exception e)
                 {
                     ;
                 }
